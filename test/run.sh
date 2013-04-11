@@ -1,6 +1,6 @@
 #!/bin/sh
 
-phantomjs ../server.js 8000 &
+phantomjs ./server.js 8000 &
 PHANTOM_PID=$!
 
 python -m SimpleHTTPServer 8001 &
