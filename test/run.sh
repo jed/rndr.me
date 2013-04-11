@@ -8,7 +8,7 @@ STATIC_PID=$!
 
 sleep 1
 
-RENDERED_HTML=`curl localhost:8000 -G -s --data-urlencode 'href=http://localhost:8001/#!/1'`
+RENDERED_HTML=`curl localhost:8000 -G -s --data-urlencode 'href=http://localhost:8001/test/#!/1'`
 
 kill -9 $PHANTOM_PID
 kill -9 $STATIC_PID
