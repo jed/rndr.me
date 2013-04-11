@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      var pages = {
+        "#!/1": "Page one",
+        "#!/2": "Page two",
+        "#!/3": "Page three"
+      }
+
+      window.onload = function() {
+        document.body.innerHTML = pages[location.hash]
+      }
+    </script>
+  </head>
+  <body></body>
+</html>
