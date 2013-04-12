@@ -1,1 +1,1 @@
-script: ./test/run.sh
+script: ./test.sh
