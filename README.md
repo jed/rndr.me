@@ -3,7 +3,13 @@ rndr
 
 [![Build Status](https://travis-ci.org/jed/rndr.png?branch=master)](https://travis-ci.org/jed/rndr)
 
-rndr is a tiny http server that eats urls and poops html. It evaluates each incoming url in a headless browser window, and outputs the html of the resulting DOM. This is useful for improving single-page app performance and SEO.
+rndr is a tiny http server that eats urls and poops html. It evaluates each incoming url in a [PhantomJS](http://phantomjs.org) headless browser window, and outputs the html of the resulting DOM.
+
+Having an easy, framework-agnostic way to create html snapshots helps solve two problems in single-page app deployment:
+
+1. Single-page apps suffer from slow startup times, due to multiple round trips between the app and API. In this case, you can use rndr to pre-render hot pages, so that they can be inlined as HTML to improve perceived performance.
+
+2. Single-page apps suffer from poor crawlability, because Google/Bing are less likely to discover content rendered on the client. So use rndr to render the `_escape_fragment_` urls that [these crawlers want](https://developers.google.com/webmasters/ajax-crawling/), by [redirecting](https://developers.google.com/webmasters/ajax-crawling/docs/faq#redirects) from your backend.
 
 Installation
 ------------
