@@ -3,7 +3,7 @@ rndr
 
 [![Build Status](https://travis-ci.org/jed/rndr.png?branch=master)](https://travis-ci.org/jed/rndr)
 
-rndr is a tiny http server that eats urls poops html. Every incoming url is evaluated in a headless browser window, outputting the HTML of the resulting DOM.
+rndr is a tiny http server that eats urls and poops html. It evaluates each incoming url in a headless browser window, and outputs the HTML of the resulting DOM. This is useful for improving single-page app performance and SEO.
 
 Installation
 ------------
@@ -60,7 +60,7 @@ Note that `port-number` is optional, and if omitted will default to the `PORT` e
 
 The server exposes a single root endpoint at `/`. It returned generated HTML based on the following parameters:
 
-- `href`: Required. This is the url to be rendered.
+- `href`: The url to be rendered. This is required, and must be fully qualified.
 - `max_time`: The maximum number of milliseconds until render. Any windows not already rendered by event will be rendered once this elapses. This is optional, and `30000` by default (30 seconds).
 - `max_bytes`: The maximum number of incoming bytes. Any windows that load more than this value will return an error without rendering. This is optional, and `1048576` by default (1 MiB).
 - `load_images`: This can be specified to any value to load document images. This is optional, and omitted by default.
