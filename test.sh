@@ -12,11 +12,13 @@ phantomjs ./server.js 8001 &
 RNDR_PID=$!
 sleep 1
 
-# Pick a random app URL
-URL='http://127.0.0.1:8000/before.html#!/'$RANDOM
+# Pick an app URL to be rendered
+URL='http://127.0.0.1:8000/before.html#!/TESTING'
 
 # Save the results rendered by the rndr server
-curl :8001 -sG --data-urlencode href=$URL > ./after.html
+curl :8001 -s -G --data-urlencode href=$URL > ./after.html
+
+cat ./after.html
 
 # Check whether the rendered file contains the random URL
 grep -q $URL ./after.html
