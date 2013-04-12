@@ -2,12 +2,19 @@ var system    = require("system")
 var webserver = require("webserver")
 var webpage   = require("webpage")
 
+var configPath = system.args[1] || "./config.js"
+var config     = require(configPath)
+
+if (!config.port) {
+  console.error("No port specified in " + configPath)
+  phantom.exit(1)
+}
+
 var server    = webserver.create()
-var port      = Number(system.args[1] || system.env.PORT || 80)
-var listening = server.listen(port, onRequest)
+var listening = server.listen(config.port, onRequest)
 
 if (!listening) {
-  console.error("Could not bind to port " + port)
+  console.error("Could not bind to port " + config.port)
   phantom.exit(1)
 }
 
@@ -32,10 +39,10 @@ function onRequest(req, res) {
     return send(400, toHTML("`href` parameter is missing."))
   }
 
-  var maxTime    = Number(query.max_time)  || 30000    // 30 seconds
-  var maxBytes   = Number(query.max_bytes) || 0x100000 // 1 MiB
-  var readyEvent = query.ready_event       || "load"   // window.onload
-  var loadImages = "load_images" in query              // false
+  var maxTime    = Number(query.max_time)  || config.maxTime
+  var maxBytes   = Number(query.max_bytes) || config.maxBytes
+  var readyEvent = query.ready_event       || config.readyEvent
+  var loadImages = "load_images" in query  || config.loadImages
 
   page.settings.loadImages = loadImages
 

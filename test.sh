@@ -8,7 +8,7 @@ python -m SimpleHTTPServer 8000 &
 APP_PID=$!
 
 # Spin up the rndr server, wait until ready
-phantomjs ./server.js 8001 &
+phantomjs ./server.js &
 RNDR_PID=$!
 sleep 1
 

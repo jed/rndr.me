@@ -26,29 +26,29 @@ from [test.sh](https://github.com/jed/rndr/blob/master/test.sh):
 #!/bin/sh
 
 # Create and save a simple JavaScript app
-echo "<script>document.write(location)</script>" > ./before.html
+echo "<script>document.write(location)</script>" > ./index.html
 
 # Spin up a server to serve it
 python -m SimpleHTTPServer 8000 &
 APP_PID=$!
 
 # Spin up the rndr server, wait until ready
-phantomjs ./server.js 8001 &
+phantomjs ./server.js &
 RNDR_PID=$!
 sleep 1
 
 # Pick an app URL to be rendered
-URL='http://127.0.0.1:8000/before.html#!/TESTING'
+URL='http://127.0.0.1:8000/#!/TESTING'
 
 # Get the results rendered by the rndr server
 HTML=`curl 127.0.0.1:8001 -s -G --data-urlencode href=$URL`
 
-# Check whether the rendered file contains the URL
+# Check whether the rendered file contains the random URL
 echo $HTML | grep -q $URL
 NOT_FOUND=$?
 
 # Spin down, clean up, and exit
-rm ./before.html
+rm ./index.html
 kill -9 $RNDR_PID
 kill -9 $APP_PID
 exit $NOT_FOUND
@@ -59,9 +59,9 @@ API
 
 To spin up the server, run the following from the command line:
 
-    phantomjs ./server.js <port-number>
+    phantomjs ./server.js <config-path>
 
-Note that `port-number` is optional, and if omitted will default to the `PORT` environment variable, or `80` if none exists.
+Note that `config-path` is optional, and if omitted will default to the provided [config.js](https://github.com/jed/rndr/blob/master/config.js) file.
 
 The server exposes a single root endpoint at `/`. It returns generated html, based on the following parameters:
 
