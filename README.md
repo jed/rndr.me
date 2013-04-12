@@ -75,3 +75,82 @@ jQuery.getJSON("http://api.myapp.com", function(data) {
   window.dispatchEvent(readyEvent)
 })
 ```
+
+Examples
+--------
+
+The following examples assume a single-page app running in production at `http:/myapp.com` and rndr running as follows:
+
+```bash
+phantomjs ./server.js 8080
+```
+
+Let's render the app with default settings:
+
+```bash
+curl localhost:8080 -G \
+  --data-urlencode 'href=http://myapp.com/#!home'
+```
+
+Now let's cap the maximum rendering time at 10 seconds:
+
+```bash
+curl localhost:8080 -G \
+  --data-urlencode 'href=http://myapp.com/#!home'
+  -d max_time=10000
+```
+
+We can also cap the maximum incoming bytes at 100KiB:
+
+```bash
+curl localhost:8080 -G \
+  --data-urlencode 'href=http://myapp.com/#!home'
+  -d max_time=10000
+  -d max_bytes=102400
+```
+
+Now let's allow images to load, raising the maximum incoming bytes to 500KiB:
+
+```bash
+curl localhost:8080 -G \
+  --data-urlencode 'href=http://myapp.com/#!home'
+  -d max_time=10000
+  -d max_bytes=512000
+  -d load_images
+```
+
+Now let's use the custom rendering event `render_ready`, triggered on the window of the DOM, using the default fallback maximum time:
+
+```bash
+curl localhost:8080 -G \
+  --data-urlencode 'href=http://myapp.com/#!home'
+  -d max_bytes=512000
+  -d load_images
+  -d ready_event=render_ready
+```
+
+LICENSE
+-------
+
+(The MIT License)
+
+Copyright (c) 2013 Jed Schmidt &lt;where@jed.is&gt;
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
