@@ -3,7 +3,7 @@ rndr
 
 [![Build Status](https://travis-ci.org/jed/rndr.png?branch=master)](https://travis-ci.org/jed/rndr)
 
-rndr is a tiny http server that eats urls and poops html. It evaluates each incoming url in a [PhantomJS](http://phantomjs.org) headless browser window, and outputs the html of the resulting DOM.
+rndr is a tiny http server that eats urls and poops html. It has only one dependency, [PhantomJS](http://phantomjs.org), which it uses evaluate each incoming url in a  headless browser window, and output the html of the resulting DOM.
 
 Having an easy, framework-agnostic way to create html snapshots helps solve two problems in single-page app deployment:
 
@@ -63,13 +63,13 @@ To spin up the server, run the following from the command line:
 
 Note that `port-number` is optional, and if omitted will default to the `PORT` environment variable, or `80` if none exists.
 
-The server exposes a single root endpoint at `/`. It returned generated HTML based on the following parameters:
+The server exposes a single root endpoint at `/`. It returns generated html, based on the following parameters:
 
 - `href`: The url to be rendered. This is required, and must be fully qualified.
-- `max_time`: The maximum number of milliseconds until render. Any windows not already rendered by event will be rendered once this elapses. This is optional, and `30000` by default (30 seconds).
+- `max_time`: The maximum number of milliseconds until render. Any windows not already rendered by the `ready_event` will be rendered once this elapses. This is optional, and `30000` by default (30 seconds).
 - `max_bytes`: The maximum number of incoming bytes. Any windows that load more than this value will return an error without rendering. This is optional, and `1048576` by default (1 MiB).
 - `load_images`: This can be specified to any value to load document images. This is optional, and omitted by default.
-- `ready_event`: This is the name of the `window` event that triggers render. This is optional, and `load` by default. To specify when rendering occurs, such as when the DOM is not ready to be rendered until after `window.onload`, trigger a DOM event manually as follows:
+- `ready_event`: This is the name of the `window` event that triggers render. This is optional, and `load` by default. To specify when rendering occurs, such as when the DOM is not ready to be rendered until after `window.onload`, trigger a DOM event manually, such as follows (using jQuery in this case):
 
 ```javascript
 jQuery.getJSON("http://api.myapp.com", function(data) {
