@@ -3,7 +3,7 @@ rndr
 
 [![Build Status](https://travis-ci.org/jed/rndr.png?branch=master)](https://travis-ci.org/jed/rndr)
 
-rndr is a tiny http server that eats urls and poops html. It evaluates each incoming url in a headless browser window, and outputs the HTML of the resulting DOM. This is useful for improving single-page app performance and SEO.
+rndr is a tiny http server that eats urls and poops html. It evaluates each incoming url in a headless browser window, and outputs the html of the resulting DOM. This is useful for improving single-page app performance and SEO.
 
 Installation
 ------------
