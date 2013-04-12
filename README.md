@@ -20,7 +20,7 @@ Installation
 Example
 -------
 
-from [test.js](https://github.com/jed/rndr/blob/master/test.js):
+from [test.sh](https://github.com/jed/rndr/blob/master/test.sh):
 
 ```bash
 #!/bin/sh
