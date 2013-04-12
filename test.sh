@@ -7,30 +7,23 @@ echo "<script>document.write(location)</script>" > ./before.html
 python -m SimpleHTTPServer 8000 &
 APP_PID=$!
 
-echo "static ok"
-
 # Spin up the rndr server, wait until ready
 phantomjs ./server.js 8001 &
 RNDR_PID=$!
 sleep 1
 
-echo "rndr ok"
-
 # Pick an app URL to be rendered
 URL='http://127.0.0.1:8000/before.html#!/TESTING'
 
-# Save the results rendered by the rndr server
-curl 127.0.0.1:8001 -s -G --data-urlencode href=$URL > ./after.html
-
-cat ./after.html
+# Get the results rendered by the rndr server
+HTML=`curl 127.0.0.1:8001 -s -G --data-urlencode href=$URL`
 
 # Check whether the rendered file contains the random URL
-grep -q $URL ./after.html
+echo $HTML | grep -q $URL
 NOT_FOUND=$?
 
 # Spin down, clean up, and exit
 rm ./before.html
-rm ./after.html
 kill -9 $RNDR_PID
 kill -9 $APP_PID
 exit $NOT_FOUND
