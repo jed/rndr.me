@@ -9,7 +9,7 @@ Having an easy, framework-agnostic way to create html snapshots helps solve two 
 
 1. Single-page apps suffer from slow startup times, due to multiple round trips between the app and API. In this case, you can use rndr to pre-render hot pages, so that they can be inlined as HTML to improve perceived performance.
 
-2. Single-page apps suffer from poor crawlability, because Google/Bing are less likely to discover content rendered on the client. So use rndr to render the `_escape_fragment_` urls that [these crawlers want](https://developers.google.com/webmasters/ajax-crawling/), by [redirecting](https://developers.google.com/webmasters/ajax-crawling/docs/faq#redirects) from your backend.
+2. Single-page apps suffer from poor crawlability, because Google/Bing are less likely to discover content rendered on the client. In this case, use rndr to render the `_escape_fragment_` urls that [these crawlers want](https://developers.google.com/webmasters/ajax-crawling/), by [redirecting](https://developers.google.com/webmasters/ajax-crawling/docs/faq#redirects) from your backend.
 
 Installation
 ------------
@@ -43,7 +43,7 @@ URL='http://127.0.0.1:8000/before.html#!/TESTING'
 # Get the results rendered by the rndr server
 HTML=`curl 127.0.0.1:8001 -s -G --data-urlencode href=$URL`
 
-# Check whether the rendered file contains the random URL
+# Check whether the rendered file contains the URL
 echo $HTML | grep -q $URL
 NOT_FOUND=$?
 
