@@ -3,7 +3,7 @@ rndr.me
 
 [![Build Status](https://travis-ci.org/jed/rndr.me.png?branch=master)](https://travis-ci.org/jed/rndr.me)
 
-rndr.me is a tiny http server that eats urls and poops html. It has only one dependency, [PhantomJS](http://phantomjs.org), which it uses evaluate each incoming url in a  headless browser window, and output the html of the resulting DOM.
+rndr.me is a tiny http server that eats urls and poops html. It has only one dependency, [PhantomJS](http://phantomjs.org), which it uses evaluate each incoming url in a headless browser window, and output the html of the resulting DOM.
 
 Having an easy, framework-agnostic way to create html snapshots helps solve two problems in single-page app deployment:
 
@@ -17,10 +17,15 @@ Installation
 1. [Install PhantomJS](http://phantomjs.org/download.html).
 2. Download [server.js](https://github.com/jed/rndr.me/blob/master/server.js) from this repo.
 
-Example
--------
+Sample setup
+------------
 
-from [test.sh](https://github.com/jed/rndr.me/blob/master/test.sh):
+In this [example shell script](https://github.com/jed/rndr.me/blob/master/test.sh), we:
+
+- create a simple JavaScript app,
+- serve it on port 8000,
+- run rndr.me on port 8001, and
+- verify the app html as rendered by rndr.me.
 
 ```bash
 #!/bin/sh
