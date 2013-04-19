@@ -1,26 +1,26 @@
-rndr
+rndr.me
 ====
 
-[![Build Status](https://travis-ci.org/jed/rndr.png?branch=master)](https://travis-ci.org/jed/rndr)
+[![Build Status](https://travis-ci.org/jed/rndr.me.png?branch=master)](https://travis-ci.org/jed/rndr.me)
 
-rndr is a tiny http server that eats urls and poops html. It has only one dependency, [PhantomJS](http://phantomjs.org), which it uses evaluate each incoming url in a  headless browser window, and output the html of the resulting DOM.
+rndr.me is a tiny http server that eats urls and poops html. It has only one dependency, [PhantomJS](http://phantomjs.org), which it uses evaluate each incoming url in a  headless browser window, and output the html of the resulting DOM.
 
 Having an easy, framework-agnostic way to create html snapshots helps solve two problems in single-page app deployment:
 
-1. Single-page apps suffer from slow startup times, due to multiple round trips between the app and API. In this case, you can use rndr to pre-render hot pages, so that they can be inlined as HTML to improve perceived performance.
+1. Single-page apps suffer from slow startup times, due to multiple round trips between the app and API. In this case, you can use rndr.me to pre-render hot pages, so that they can be inlined as HTML to improve perceived performance.
 
-2. Single-page apps suffer from poor crawlability, because Google/Bing are less likely to discover content rendered on the client. In this case, use rndr to render the `_escape_fragment_` urls that [these crawlers want](https://developers.google.com/webmasters/ajax-crawling/), by [redirecting](https://developers.google.com/webmasters/ajax-crawling/docs/faq#redirects) from your backend.
+2. Single-page apps suffer from poor crawlability, because Google/Bing are less likely to discover content rendered on the client. In this case, use rndr.me to render the `_escape_fragment_` urls that [these crawlers want](https://developers.google.com/webmasters/ajax-crawling/), by [redirecting](https://developers.google.com/webmasters/ajax-crawling/docs/faq#redirects) from your backend.
 
 Installation
 ------------
 
 1. [Install PhantomJS](http://phantomjs.org/download.html).
-2. Download [server.js](https://github.com/jed/rndr/blob/master/server.js) from this repo.
+2. Download [server.js](https://github.com/jed/rndr.me/blob/master/server.js) from this repo.
 
 Example
 -------
 
-from [test.sh](https://github.com/jed/rndr/blob/master/test.sh):
+from [test.sh](https://github.com/jed/rndr.me/blob/master/test.sh):
 
 ```bash
 #!/bin/sh
@@ -32,15 +32,15 @@ echo "<script>document.write(location)</script>" > ./index.html
 python -m SimpleHTTPServer 8000 &
 APP_PID=$!
 
-# Spin up the rndr server, wait until ready
+# Spin up the rndr.me server, wait until ready
 phantomjs ./server.js &
-RNDR_PID=$!
+rndrme_PID=$!
 sleep 1
 
 # Pick an app URL to be rendered
 URL='http://127.0.0.1:8000/#!/TESTING'
 
-# Get the results rendered by the rndr server
+# Get the results rendered by the rndr.me server
 HTML=`curl 127.0.0.1:8001 -s -G --data-urlencode href=$URL`
 
 # Check whether the rendered file contains the random URL
@@ -49,7 +49,7 @@ NOT_FOUND=$?
 
 # Spin down, clean up, and exit
 rm ./index.html
-kill -9 $RNDR_PID
+kill -9 $rndrme_PID
 kill -9 $APP_PID
 exit $NOT_FOUND
 ```
@@ -61,7 +61,7 @@ To spin up the server, run the following from the command line:
 
     phantomjs ./server.js <config-path>
 
-Note that `config-path` is optional, and if omitted will default to the provided [config.js](https://github.com/jed/rndr/blob/master/config.js) file.
+Note that `config-path` is optional, and if omitted will default to the provided [config.js](https://github.com/jed/rndr.me/blob/master/config.js) file.
 
 The server exposes a single root endpoint at `/`. It returns generated html, based on the following parameters:
 
@@ -84,7 +84,7 @@ jQuery.getJSON("http://api.myapp.com", function(data) {
 Examples
 --------
 
-The following examples assume a single-page app running in production at `http:/myapp.com` and rndr running as follows:
+The following examples assume a single-page app running in production at `http:/myapp.com` and rndr.me running as follows:
 
 ```bash
 phantomjs ./server.js 8080

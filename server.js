@@ -79,7 +79,7 @@ function onRequest(req, res) {
 
     res.setHeader("Content-Type", "text/html")
     res.setHeader("Content-Length", byteLength(data))
-    res.setHeader("X-Rndr-Bytes-Consumed", bytesConsumed.toString())
+    res.setHeader("X-Rndrme-Bytes-Consumed", bytesConsumed.toString())
 
     res.write(data)
     res.close()
