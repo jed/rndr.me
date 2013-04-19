@@ -62,7 +62,7 @@ exit $NOT_FOUND
 Quickstart on Heroku
 --------------------
 
-Because rndr.me depends only on PhantomJS, it's easy to set up and run yourself. Here's an example of everything you need to start your own instance running on [Heroku](https://www.heroku.com).
+Because rndr.me depends only on PhantomJS, it's easy to set up and run yourself. This [example shell script](https://github.com/jed/rndr.me/blob/master/heroku.sh) shows you everything you need to start your own instance running on [Heroku](https://www.heroku.com).
 
 ```bash
 # Create a place for your renderer to live
@@ -71,7 +71,7 @@ cd my_renderer
 
 # Create a git repo with rndr.me and a Procfile
 git init
-git submodule add git://github.com/jed/rndr.git
+git submodule add git://github.com/jed/rndr.me.git
 echo "web: phantomjs rndr/server.js" > Procfile
 
 # Create a new Heroku app with the PhantomJS buildpack
