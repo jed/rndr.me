@@ -1,0 +1,226 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>rndr.me by jed</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>rndr.me</h1>
+        <p>an HTTP server that uses PhantomJS to render HTML</p>
+
+        <p class="view"><a href="https://github.com/jed/rndr.me">View the Project on GitHub <small>jed/rndr.me</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/jed/rndr.me/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/jed/rndr.me/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/jed/rndr.me">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>rndr.me</h1>
+
+<p><a href="https://travis-ci.org/jed/rndr.me"><img src="https://travis-ci.org/jed/rndr.me.png?branch=master" alt="Build Status"></a></p>
+
+<p>rndr.me is a tiny http server that eats urls and poops html. It has only one dependency, <a href="http://phantomjs.org">PhantomJS</a>, which it uses evaluate each incoming url in a headless browser window, and output the html of the resulting DOM.</p>
+
+<p>Having an easy, framework-agnostic way to create html snapshots helps solve two problems in single-page JavaScript app deployment:</p>
+
+<ol>
+<li><p>Single-page apps suffer from poor crawlability, because Google/Bing are less likely to discover content rendered on the client. In this case, use rndr.me to render the <code>_escape_fragment_</code> urls that <a href="https://developers.google.com/webmasters/ajax-crawling/">these crawlers want</a>, by <a href="https://developers.google.com/webmasters/ajax-crawling/docs/faq#redirects">redirecting</a> from your backend.</p></li>
+<li><p>Single-page apps suffer from slow startup times, due to multiple round trips between the app and API. In this case, you can use rndr.me to pre-render hot pages, so that they can be inlined as HTML to improve perceived performance.</p></li>
+</ol><p>Of course, this is just one approach for folks looking for way to improve SEO and performance when rendering single-page apps. If you're using Backbone.js and want a more tightly coupled solution, check out <a href="https://github.com/airbnb" class="user-mention">@airbnb</a>'s <a href="https://github.com/airbnb/rendr">rendr</a>. If you're looking for something a bit higher-level that'll run a cluster for you, check out <a href="https://github.com/bfirsh" class="user-mention">@bfirsh</a>'s <a href="https://github.com/bfirsh/otter">otter</a>.</p>
+
+<h2>Installation</h2>
+
+<ol>
+<li>
+<a href="http://phantomjs.org/download.html">Install PhantomJS</a>.</li>
+<li>Download <a href="https://github.com/jed/rndr.me/blob/master/server.js">server.js</a> from this repo.</li>
+</ol><h2>Sample setup</h2>
+
+<p>In this <a href="https://github.com/jed/rndr.me/blob/master/test.sh">example shell script</a>, we:</p>
+
+<ul>
+<li>create a simple JavaScript app,</li>
+<li>serve it on port 8000,</li>
+<li>run rndr.me on port 8001, and</li>
+<li>verify the app html as rendered by rndr.me.</li>
+</ul><div class="highlight"><pre><span class="c">#!/bin/sh</span>
+
+<span class="c"># Create and save a simple JavaScript app</span>
+<span class="nb">echo</span> <span class="s2">"&lt;script&gt;document.write(location)&lt;/script&gt;"</span> &gt; ./index.html
+
+<span class="c"># Spin up a server to serve it</span>
+python -m SimpleHTTPServer 8000 &amp;
+<span class="nv">APP_PID</span><span class="o">=</span><span class="nv">$!</span>
+
+<span class="c"># Spin up the rndr.me server, wait until ready</span>
+phantomjs ./server.js &amp;
+<span class="nv">rndrme_PID</span><span class="o">=</span><span class="nv">$!</span>
+sleep 1
+
+<span class="c"># Pick an app URL to be rendered</span>
+<span class="nv">URL</span><span class="o">=</span><span class="s1">'http://127.0.0.1:8000/#!/TESTING'</span>
+
+<span class="c"># Get the results rendered by the rndr.me server</span>
+<span class="nv">HTML</span><span class="o">=</span><span class="sb">`</span>curl 127.0.0.1:8001 -s -G --data-urlencode <span class="nv">href</span><span class="o">=</span><span class="nv">$URL</span><span class="sb">`</span>
+
+<span class="c"># Check whether the rendered file contains the random URL</span>
+<span class="nb">echo</span> <span class="nv">$HTML</span> | grep -q <span class="nv">$URL</span>
+<span class="nv">NOT_FOUND</span><span class="o">=</span><span class="nv">$?</span>
+
+<span class="c"># Spin down, clean up, and exit</span>
+rm ./index.html
+<span class="nb">kill</span> -9 <span class="nv">$rndrme_PID</span>
+<span class="nb">kill</span> -9 <span class="nv">$APP_PID</span>
+<span class="nb">exit</span> <span class="nv">$NOT_FOUND</span>
+</pre></div>
+
+<h2>Quickstart on Heroku</h2>
+
+<p>Because rndr.me depends only on PhantomJS, it's easy to set up and run yourself. This <a href="https://github.com/jed/rndr.me/blob/master/heroku.sh">example shell script</a> shows you everything you need to start your own instance running on <a href="https://www.heroku.com">Heroku</a>.</p>
+
+<div class="highlight"><pre><span class="c"># Create a place for your renderer to live</span>
+mkdir my_renderer
+<span class="nb">cd </span>my_renderer
+
+<span class="c"># Create a git repo with rndr.me and a Procfile</span>
+git init
+git submodule add git://github.com/jed/rndr.me.git
+<span class="nb">echo</span> <span class="s2">"web: phantomjs rndr/server.js"</span> &gt; Procfile
+
+<span class="c"># Create a new Heroku app with the PhantomJS buildpack</span>
+heroku apps:create
+heroku config:add <span class="nv">BUILDPACK_URL</span><span class="o">=</span>http://github.com/stomita/heroku-buildpack-phantomjs.git
+
+<span class="c"># Push your code</span>
+git add .
+git commit -m <span class="s2">"first commit"</span>
+git push heroku master
+
+<span class="c"># Scale your app</span>
+heroku ps:scale <span class="nv">web</span><span class="o">=</span>1
+</pre></div>
+
+<h2>API</h2>
+
+<p>To spin up the server, run the following from the command line:</p>
+
+<pre><code>phantomjs ./server.js &lt;config-path&gt;
+</code></pre>
+
+<p>Note that <code>config-path</code> is optional, and if omitted will default to the provided <a href="https://github.com/jed/rndr.me/blob/master/config.js">config.js</a> file.</p>
+
+<p>The server exposes a single root endpoint at <code>/</code>. It returns generated html, based on the following parameters:</p>
+
+<ul>
+<li>
+<code>href</code>: The url to be rendered. This is required, and must be fully qualified.</li>
+<li>
+<code>max_time</code>: The maximum number of milliseconds until render. Any windows not already rendered by the <code>ready_event</code> will be rendered once this elapses. This is optional, and <code>30000</code> by default (30 seconds).</li>
+<li>
+<code>max_bytes</code>: The maximum number of incoming bytes. Any windows that load more than this value will return an error without rendering. This is optional, and <code>1048576</code> by default (1 MiB).</li>
+<li>
+<code>load_images</code>: This can be specified to any value to load document images. This is optional, and omitted by default.</li>
+<li>
+<code>ready_event</code>: This is the name of the <code>window</code> event that triggers render. This is optional, and <code>load</code> by default. To specify when rendering occurs, such as when the DOM is not ready to be rendered until after <code>window.onload</code>, trigger a DOM event manually, such as follows (using jQuery in this case):</li>
+</ul><div class="highlight"><pre><span class="nx">jQuery</span><span class="p">.</span><span class="nx">getJSON</span><span class="p">(</span><span class="s2">"http://api.myapp.com"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">myCustomRenderingCallback</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
+
+  <span class="kd">var</span> <span class="nx">readyEvent</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createEvent</span><span class="p">(</span><span class="s2">"Event"</span><span class="p">)</span>
+  <span class="nx">readyEvent</span><span class="p">.</span><span class="nx">initEvent</span><span class="p">(</span><span class="s2">"renderReady"</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">true</span><span class="p">)</span>
+  <span class="nb">window</span><span class="p">.</span><span class="nx">dispatchEvent</span><span class="p">(</span><span class="nx">readyEvent</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+
+<h2>Examples</h2>
+
+<p>The following examples assume a single-page app running in production at <code>http:/myapp.com</code> and rndr.me running as follows:</p>
+
+<div class="highlight"><pre>phantomjs ./server.js 8080
+</pre></div>
+
+<p>Let's render the app with default settings:</p>
+
+<div class="highlight"><pre>curl localhost:8080 -G <span class="se">\</span>
+  --data-urlencode <span class="s1">'href=http://myapp.com/#!home'</span>
+</pre></div>
+
+<p>Now let's cap the maximum rendering time at 10 seconds:</p>
+
+<div class="highlight"><pre>curl localhost:8080 -G <span class="se">\</span>
+  --data-urlencode <span class="s1">'href=http://myapp.com/#!home'</span>
+  -d <span class="nv">max_time</span><span class="o">=</span>10000
+</pre></div>
+
+<p>We can also cap the maximum incoming bytes at 100KiB:</p>
+
+<div class="highlight"><pre>curl localhost:8080 -G <span class="se">\</span>
+  --data-urlencode <span class="s1">'href=http://myapp.com/#!home'</span>
+  -d <span class="nv">max_time</span><span class="o">=</span>10000
+  -d <span class="nv">max_bytes</span><span class="o">=</span>102400
+</pre></div>
+
+<p>Now let's allow images to load, raising the maximum incoming bytes to 500KiB:</p>
+
+<div class="highlight"><pre>curl localhost:8080 -G <span class="se">\</span>
+  --data-urlencode <span class="s1">'href=http://myapp.com/#!home'</span>
+  -d <span class="nv">max_time</span><span class="o">=</span>10000
+  -d <span class="nv">max_bytes</span><span class="o">=</span>512000
+  -d load_images
+</pre></div>
+
+<p>Now let's use the custom rendering event <code>render_ready</code>, triggered on the window of the DOM, using the default fallback maximum time:</p>
+
+<div class="highlight"><pre>curl localhost:8080 -G <span class="se">\</span>
+  --data-urlencode <span class="s1">'href=http://myapp.com/#!home'</span>
+  -d <span class="nv">max_bytes</span><span class="o">=</span>512000
+  -d load_images
+  -d <span class="nv">ready_event</span><span class="o">=</span>render_ready
+</pre></div>
+
+<h2>LICENSE</h2>
+
+<p>(The MIT License)</p>
+
+<p>Copyright (c) 2013 Jed Schmidt &lt;<a href="mailto:where@jed.is">where@jed.is</a>&gt;</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/jed">jed</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
