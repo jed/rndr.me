@@ -28,18 +28,16 @@
         </ul>
       </header>
       <section>
-        <h1>rndr.me</h1>
+        <p>rndr.me is a tiny http server that eats urls and poops html. It has only one dependency, <a href="http://phantomjs.org">PhantomJS</a>, which it uses evaluate each incoming url in a headless browser window, and output the html of the resulting DOM.</p>
 
 <p><a href="https://travis-ci.org/jed/rndr.me"><img src="https://travis-ci.org/jed/rndr.me.png?branch=master" alt="Build Status"></a></p>
-
-<p>rndr.me is a tiny http server that eats urls and poops html. It has only one dependency, <a href="http://phantomjs.org">PhantomJS</a>, which it uses evaluate each incoming url in a headless browser window, and output the html of the resulting DOM.</p>
 
 <p>Having an easy, framework-agnostic way to create html snapshots helps solve two problems in single-page JavaScript app deployment:</p>
 
 <ol>
 <li><p>Single-page apps suffer from poor crawlability, because Google/Bing are less likely to discover content rendered on the client. In this case, use rndr.me to render the <code>_escape_fragment_</code> urls that <a href="https://developers.google.com/webmasters/ajax-crawling/">these crawlers want</a>, by <a href="https://developers.google.com/webmasters/ajax-crawling/docs/faq#redirects">redirecting</a> from your backend.</p></li>
 <li><p>Single-page apps suffer from slow startup times, due to multiple round trips between the app and API. In this case, you can use rndr.me to pre-render hot pages, so that they can be inlined as HTML to improve perceived performance.</p></li>
-</ol><p>Of course, this is just one approach for folks looking for way to improve SEO and performance when rendering single-page apps. If you're using Backbone.js and want a more tightly coupled solution, check out <a href="https://github.com/airbnb" class="user-mention">@airbnb</a>'s <a href="https://github.com/airbnb/rendr">rendr</a>. If you're looking for something a bit higher-level that'll run a cluster for you, check out <a href="https://github.com/bfirsh" class="user-mention">@bfirsh</a>'s <a href="https://github.com/bfirsh/otter">otter</a>.</p>
+</ol><p>Of course, this is just one approach for folks looking for way to improve SEO and performance when rendering single-page apps. If you're using Backbone.js and want a more tightly coupled solution, check out <a href="https://github.com/airbnb">@airbnb</a>'s <a href="https://github.com/airbnb/rendr">rendr</a>. If you're looking for something a bit higher-level that'll run a cluster for you, check out <a href="https://github.com/bfirsh">@bfirsh</a>'s <a href="https://github.com/bfirsh/otter">otter</a>.</p>
 
 <h2>Installation</h2>
 
