@@ -1,9 +1,6 @@
-rndr.me
-=======
+rndr.me is a tiny http server that eats urls and poops html. It has only one dependency, [PhantomJS](http://phantomjs.org), which it uses evaluate each incoming url in a headless browser window, and output the html of the resulting DOM.
 
 [![Build Status](https://travis-ci.org/jed/rndr.me.png?branch=master)](https://travis-ci.org/jed/rndr.me)
-
-rndr.me is a tiny http server that eats urls and poops html. It has only one dependency, [PhantomJS](http://phantomjs.org), which it uses evaluate each incoming url in a headless browser window, and output the html of the resulting DOM.
 
 Having an easy, framework-agnostic way to create html snapshots helps solve two problems in single-page JavaScript app deployment:
 
@@ -11,7 +8,7 @@ Having an easy, framework-agnostic way to create html snapshots helps solve two 
 
 2. Single-page apps suffer from slow startup times, due to multiple round trips between the app and API. In this case, you can use rndr.me to pre-render hot pages, so that they can be inlined as HTML to improve perceived performance.
 
-Of course, this is just one approach for folks looking for way to improve SEO and performance when rendering single-page apps. If you're using Backbone.js and want a more tightly coupled solution, check out @airbnb's [rendr](https://github.com/airbnb/rendr). If you're looking for something a bit higher-level that'll run a cluster for you, check out @bfirsh's [otter](https://github.com/bfirsh/otter).
+Of course, this is just one approach for folks looking for way to improve SEO and performance when rendering single-page apps. If you're using Backbone.js and want a more tightly coupled solution, check out [@airbnb](https://github.com/airbnb)'s [rendr](https://github.com/airbnb/rendr). If you're looking for something a bit higher-level that'll run a cluster for you, check out [@bfirsh](https://github.com/bfirsh)'s [otter](https://github.com/bfirsh/otter).
 
 Installation
 ------------
