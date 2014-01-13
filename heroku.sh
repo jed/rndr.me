@@ -5,11 +5,11 @@ cd my_renderer
 # Create a git repo with rndr.me and a Procfile
 git init
 git submodule add git://github.com/jed/rndr.me.git
-echo "web: phantomjs rndr/server.js" > Procfile
+echo "web: phantomjs rndr.me/server.js" > Procfile
 
 # Create a new Heroku app with the PhantomJS buildpack
 heroku apps:create
-heroku config:add BUILDPACK_URL=http://github.com/stomita/heroku-buildpack-phantomjs.git
+heroku config:add BUILDPACK_URL=https://github.com/stomita/heroku-buildpack-phantomjs.git
 
 # Push your code
 git add .
