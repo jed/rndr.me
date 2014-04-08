@@ -14,7 +14,7 @@ Installation
 ------------
 
 1. [Install PhantomJS](http://phantomjs.org/download.html).
-2. Download [server.js](https://github.com/jed/rndr.me/blob/master/server.js) from this repo.
+2. Download [server.js](https://github.com/jed/rndr.me/blob/master/server.js) from this repo **OR** `npm install rndr-me`
 
 Sample setup
 ------------
@@ -93,7 +93,9 @@ To spin up the server, run the following from the command line:
 
     phantomjs ./server.js <config-path>
 
-Note that `config-path` is optional, and if omitted will default to the provided [config.js](https://github.com/jed/rndr.me/blob/master/config.js) file.
+Note that `config-path` is optional, and if omitted will default to the provided [config.js](https://github.com/jed/rndr.me/blob/master/config.js) file. You may also override any options from the config file using options on the command line:
+
+    phantomjs ./server.js --port 8002 --ready_event onRender
 
 The server exposes a single root endpoint at `/`. It returns generated html, based on the following parameters:
 
@@ -119,7 +121,7 @@ Examples
 The following examples assume a single-page app running in production at `http:/myapp.com` and rndr.me running as follows:
 
 ```bash
-phantomjs ./server.js 8080
+phantomjs ./server.js --port 8080
 ```
 
 Let's render the app with default settings:

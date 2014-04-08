@@ -10,7 +10,7 @@ APP_PID=$!
 # Spin up the rndr server, wait until ready
 phantomjs ./server.js &
 RNDR_PID=$!
-sleep 1
+sleep 5
 
 # Pick an app URL to be rendered
 URL='http://127.0.0.1:8000/#!/TESTING'

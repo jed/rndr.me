@@ -1,0 +1,26 @@
+{
+  "name": "rndr-me",
+  "description": "An HTTP server that uses PhantomJS to render HTML.",
+  "version": "1.0.0",
+  "author": "Jed Schmidt <where@jed.is> (http://jed.is)",
+  "bugs": {
+    "url": "https://github.com/jed/rndr.me/issues"
+  },
+  "homepage": "https://github.com/jed/rndr.me",
+  "keywords": [
+    "phantomjs"
+  ],
+  "license": "MIT",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jed/rndr.me.git"
+  },
+  "scripts": {
+    "test": "./test.sh",
+    "start": "phantomjs server.js"
+  },
+  "dependencies": {
+    "minimist": "0.0.8"
+  }
+}
