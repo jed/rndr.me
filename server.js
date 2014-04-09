@@ -1,9 +1,26 @@
 var system    = require("system")
 var webserver = require("webserver")
 var webpage   = require("webpage")
+var args      = system.args.slice(1)
+var argv      = require('minimist')(args, {
+  alias: {
+    'maxTime': 'max_time',
+    'maxBytes': 'max_bytes',
+    'readyEvent': 'ready_event',
+    'loadImages': 'load_images'
+  }
+})
 
-var configPath = system.args[1] || "./config.js"
+var configPath = args.length === 1 ? args[0] : argv.config || "./config.js"
 var config     = require(configPath)
+
+for (var a in argv) {
+  if (argv[a] === "true" || argv[a] === "false") {
+    config[a] = argv[a] === "true"
+  } else {
+    config[a] = argv[a]
+  }
+}
 
 if (!config.port) {
   console.error("No port specified in " + configPath)
